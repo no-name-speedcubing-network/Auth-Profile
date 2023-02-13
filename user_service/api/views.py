@@ -10,7 +10,7 @@ from .models import UserProfile, ProfileResults
 
 class UserView(APIView):
 
-    def get(self, request, pk=None):
+    def get(self, request, pk):
         user = User.objects.get(id=pk)
         serializer = FullUserInfoSerializer(user, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -30,15 +30,14 @@ class UserView(APIView):
 
     def delete(self, request, pk):
         # TODO write tests and change get to filter. Also in another places
-        user = User.objects.get(id=pk)
+        user = User.objects.filter(id=pk)
         user.delete()
-
         return Response('user deleted', status=status.HTTP_200_OK)
 
 
 class ProfileView(APIView):
 
-    def get(self, request, pk=None):
+    def get(self, request, pk):
         profiles = UserProfile.objects.get(user=pk)
         serializer = UserProfileSerializer(profiles, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -55,11 +54,6 @@ class ProfileView(APIView):
 
 
 class ProfileResultsView(APIView):
-
-    def get(self, request, pk):
-        results = ProfileResults.objects.get(user=pk)
-        serializer = ProfileResultsSerializer(results)
-        return Response(serializer.data)
 
     def put(self, request, pk):
         results = ProfileResults.objects.get(user=pk)

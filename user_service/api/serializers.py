@@ -28,6 +28,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    signup_date = serializers.CharField(read_only=True)
+
     class Meta:
         model = UserProfile
         fields = ('first_name', 'last_name', 'signup_date')
